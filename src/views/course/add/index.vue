@@ -1,5 +1,9 @@
 <template>
-  <div> this id add page
+  <div class="course-add"> 
+    <div>
+
+      
+    </div>
 
   </div>
 </template>

@@ -1,30 +1,16 @@
 <template>
-  <div class="login-container">
+  <div class="change-container">
     <el-form
-      ref="loginForm"
-      :model="loginForm"
-      :rules="loginRules"
-      class="login-form"
+      ref="changeForm"
+      :model="changeForm"
+      :rules="changeRules"
+      class="change-form"
       auto-complete="on"
       label-position="left"
     >
       <div class="title-container">
-        <h3 class="title">欢迎登录商家管理系统</h3>
+        <h3 class="title">修改密码</h3>
       </div>
-      <el-form-item prop="username">
-        <span class="svg-container">
-          <svg-icon icon-class="user" />
-        </span>
-        <el-input
-          ref="username"
-          v-model="loginForm.username"
-          placeholder="Username"
-          name="username"
-          type="text"
-          tabindex="1"
-          auto-complete="on"
-        />
-      </el-form-item>
       <el-form-item prop="password">
         <span class="svg-container">
           <svg-icon icon-class="password" />
@@ -32,66 +18,96 @@
         <el-input
           :key="passwordType"
           ref="password"
-          v-model="loginForm.password"
+          v-model="changeForm.password"
           :type="passwordType"
           placeholder="Password"
           name="password"
           tabindex="2"
           auto-complete="on"
-          @keyup.enter.native="handleLogin"
         />
         <span class="show-pwd" @click="showPwd">
           <svg-icon :icon-class="passwordType === 'password' ? 'eye' : 'eye-open'" />
         </span>
       </el-form-item>
+      <el-form-item prop="confirmPassword">
+        <span class="svg-container">
+          <svg-icon icon-class="password" />
+        </span>
+        <el-input
+          :key="passwordType"
+          ref="confirmPassword"
+          v-model="changeForm.password"
+          :type="passwordType"
+          placeholder="Confirm Password"
+          name="confirmPassword"
+          tabindex="2"
+          auto-complete="on"
+        />
+        <span class="show-pwd" @click="showComfirmPwd">
+          <svg-icon :icon-class="passwordType === 'password' ? 'eye' : 'eye-open'" />
+        </span>
+      </el-form-item>
+      <el-form-item>
+        <span class="svg-container">
+          <i class="el-icon-mobile-phone" style="color:#fff;font-size: 1.2em;" />
+        </span>
+        <el-input
+          v-model="changeForm.phone"
+          placeholder="Phone"
+          name="phone"
+          tabindex="2"
+          auto-complete="on"
+        />
+      </el-form-item>
+      <el-form-item class="send-code-container">
+        <send-code />
+      </el-form-item>
       <el-button
         :loading="loading"
         type="primary"
         style="width:100%;margin-bottom:20px;"
-        @click.native.prevent="handleLogin"
-      >登陆</el-button>
-      <div class="to-register-changepassword">
+        @click.native.prevent="handleSubmit"
+      >确认修改</el-button>
+      <div class="to-register-login">
         <span @click="toRegister">申请注册</span>
         <span>|</span>
-        <span @click="toForget">忘记密码</span>
+        <span @click="$router.push('/login')">去登录</span>
       </div>
     </el-form>
   </div>
 </template>
 
 <script>
-import { validUsername } from "@/utils/validate"
+import SendCode from "@/components/SendCode/index"
 
 export default {
   name: "Login",
+  components: {
+    SendCode
+  },
   data() {
-    const validateUsername = (rule, value, callback) => {
-      if (!validUsername(value)) {
-        callback(new Error("Please enter the correct user name"))
+    const validateConfirmPassword = (rule, value, callback) => {
+      if (value !== this.changeForm.password) {
+        callback(new Error("两次输入的密码不一致"))
       } else {
         callback()
       }
     }
     const validatePassword = (rule, value, callback) => {
       if (value.length < 6) {
-        callback(new Error("The password can not be less than 6 digits"))
+        callback(new Error("密码不能小于6位数"))
       } else {
         callback()
       }
     }
     return {
-      loginForm: {
-        username: "admin",
-        password: "111111",
+      changeForm: {
+        password: '',
+        confirmPassword: '',
+        phone: null,
+        code: null
       },
-      loginRules: {
-        username: [
-          {
-            required: true,
-            trigger: "blur",
-            validator: validateUsername,
-          },
-        ],
+      changeRules: {
         password: [
           {
             required: true,
@@ -99,19 +115,18 @@ export default {
             validator: validatePassword,
           },
         ],
+        confirmPassword: [
+          {
+            required: true,
+            trigger: "blur",
+            validator: validateConfirmPassword,
+          },
+        ]
       },
       loading: false,
       passwordType: "password",
       redirect: undefined,
     }
-  },
-  watch: {
-    $route: {
-      handler: function(route) {
-        this.redirect = route.query && route.query.redirect
-      },
-      immediate: true,
-    },
   },
   methods: {
     showPwd() {
@@ -124,21 +139,20 @@ export default {
         this.$refs.password.focus()
       })
     },
-    handleLogin() {
-      this.$refs.loginForm.validate((valid) => {
+    showComfirmPwd() {
+      if (this.passwordType === "password") {
+        this.passwordType = ""
+      } else {
+        this.passwordType = "password"
+      }
+      this.$nextTick(() => {
+        this.$refs.confirmPassword.focus()
+      })
+    },
+    handleSubmit() {
+      this.$refs.changeForm.validate((valid) => {
         if (valid) {
-          this.loading = true
-          this.$store
-            .dispatch("user/login", this.loginForm)
-            .then(() => {
-              this.$router.push({
-                path: this.redirect || "/",
-              })
-              this.loading = false
-            })
-            .catch(() => {
-              this.loading = false
-            })
+          // 修改密码
         } else {
           console.log("error submit!!")
           return false
@@ -149,11 +163,6 @@ export default {
       console.log(this.$route)
       this.$router.push({
         path: "/register",
-      })
-    },
-    toForget() {
-      this.$router.push({
-        path: "/forgetPassword",
       })
     },
   },
@@ -169,13 +178,13 @@ $light_gray: #fff;
 $cursor: #fff;
 
 @supports (-webkit-mask: none) and (not (cater-color: $cursor)) {
-  .login-container .el-input input {
+  .change-container .el-input input {
     color: $cursor;
   }
 }
 
 /* reset element-ui css */
-.login-container {
+.change-container {
   .el-input {
     display: inline-block;
     height: 40px;
@@ -192,7 +201,7 @@ $cursor: #fff;
       caret-color: $cursor;
 
       &:-webkit-autofill {
-         -webkit-text-fill-color: #ffffff !important;
+        -webkit-text-fill-color: #ffffff !important;
         transition: background-color 5000s ease-in-out 0s !important;
       }
     }
@@ -210,6 +219,20 @@ $cursor: #fff;
         color: #fff;
       }
     }
+
+  }
+  .send-code-container {
+    position:relative;
+    width:calc(100% - 100px);
+    .code,.count{
+      position:absolute;
+      height:100%;
+      background-color: transparent;
+      right:-92px;
+      border: 1px solid #fff;
+      border-radius: 5px;
+      color:#fff
+    }
   }
 }
 </style>
@@ -219,7 +242,7 @@ $bg: #2d3a4b;
 $dark_gray: #889aa4;
 $light_gray: #eee;
 
-.login-container {
+.change-container {
   min-height: 100%;
   width: 100%;
   background-color: $bg;
@@ -230,7 +253,7 @@ $light_gray: #eee;
   background-image: url("../../assets/bg.jpg");
   background-size: cover;
 
-  .login-form {
+  .change-form {
     max-width: 100%;
     padding: 160px 35px 0;
     margin: 0 auto;
@@ -240,9 +263,10 @@ $light_gray: #eee;
     text-align: center;
     border-radius: 10px;
     padding: 30px;
+
   }
 
-  .to-register-changepassword {
+  .to-register-login {
     display: flex;
     justify-content: center;
     color: #fff;
