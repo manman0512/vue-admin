@@ -3,8 +3,8 @@
     <div class="container">
       <p style="margin-top:0">
         尊敬商家您好，您正在申请入驻本平台，请认真填写下列信息。
-        <br />工作人员会在2个工作日内进行资质审核并且与您取得联系，请保持电话畅通。
-        <br />期待您的加入……
+        <br>工作人员会在2个工作日内进行资质审核并且与您取得联系，请保持电话畅通。
+        <br>期待您的加入……
       </p>
       <el-form ref="form" :model="form" label-width="120px" size="small">
         <div class="form-item">
@@ -15,7 +15,7 @@
               action="https://jsonplaceholder.typicode.com/posts/"
               :show-file-list="false"
             >
-              <img v-if="form.imageUrl" :src="form.imageUrl" />
+              <img v-if="form.imageUrl" :src="form.imageUrl">
               <i v-else class="el-icon-plus avatar-uploader-icon" />
             </el-upload>
           </el-form-item>
@@ -24,7 +24,11 @@
           </el-form-item>
           <el-form-item label="所属行业：">
             <div>
-              <el-select v-model="value" placeholder="请选择" style="width:250px">
+              <el-select
+                v-model="value"
+                placeholder="请选择"
+                style="width:250px"
+              >
                 <el-option />
               </el-select>
             </div>
@@ -41,7 +45,7 @@
               action="https://jsonplaceholder.typicode.com/posts/"
               :show-file-list="false"
             >
-              <img v-if="form.avaterUrl" :src="form.avaterUrl" />
+              <img v-if="form.avaterUrl" :src="form.avaterUrl">
               <i v-else class="el-icon-plus avatar-uploader-icon" />
             </el-upload>
           </el-form-item>
@@ -76,7 +80,11 @@
         </div>
         <div style="text-align:center;margin:10px 0;">
           <el-checkbox v-model="checked" style="margin:0 5px;" />
-          <a href="javascript:;" class="agree" @click="$router.push('/agree')">平台入驻协议</a>
+          <a
+            href="javascript:;"
+            class="agree"
+            @click="$router.push('/agree')"
+          >平台入驻协议</a>
         </div>
         <div style="text-align:center">
           <el-button
@@ -85,7 +93,9 @@
             style="padding:10px 50px;margin:10px 0;font-size:16px;"
           >提交申请</el-button>
         </div>
-        <div>注：入驻审核被驳回后的7个工作日内需补充完整并提交审核，逾期需重新提交新的入驻申请；每个机构有3次申请的机会，请注意提交资质的准确性和完整性。</div>
+        <div>
+          注：入驻审核被驳回后的7个工作日内需补充完整并提交审核，逾期需重新提交新的入驻申请；每个机构有3次申请的机会，请注意提交资质的准确性和完整性。
+        </div>
       </el-form>
     </div>
   </div>
@@ -97,41 +107,41 @@ export default {
     return {
       form: {
         name: "",
-        avaterUrl: "",
+        avaterUrl: ""
       },
       rules: {
         name: [
           {
             required: true,
             message: "请输入活动名称",
-            trigger: "blur",
+            trigger: "blur"
           },
           {
             min: 3,
             max: 5,
             message: "长度在 3 到 5 个字符",
-            trigger: "blur",
-          },
+            trigger: "blur"
+          }
         ],
         region: [
           {
             required: true,
             message: "请选择活动区域",
-            trigger: "change",
-          },
+            trigger: "change"
+          }
         ],
         date1: [
           {
             type: "date",
             required: true,
             message: "请选择日期",
-            trigger: "change",
-          },
-        ],
-      },
-    }
-  },
-}
+            trigger: "change"
+          }
+        ]
+      }
+    };
+  }
+};
 </script>
 
 <style lang="scss">
@@ -139,6 +149,7 @@ export default {
   display: flex;
   min-height: 100%;
   width: 100%;
+  background-color: #2d3a4b;
 
   .el-form {
     background: hsla(0, 0%, 100%, 0.5);

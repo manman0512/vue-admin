@@ -250,7 +250,8 @@ $light_gray: #eee;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  background-image: url("../../assets/bg.jpg");
+  // background-image: url("../../assets/bg.jpg");
+  background-color: $bg;
   background-size: cover;
 
   .change-form {
