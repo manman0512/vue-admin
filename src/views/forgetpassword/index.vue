@@ -25,7 +25,10 @@
           tabindex="2"
           auto-complete="on"
         />
-        <span class="show-pwd" @click="showPwd">
+        <span
+          class="show-pwd"
+          @click="showPwd"
+        >
           <svg-icon :icon-class="passwordType === 'password' ? 'eye' : 'eye-open'" />
         </span>
       </el-form-item>
@@ -43,13 +46,19 @@
           tabindex="2"
           auto-complete="on"
         />
-        <span class="show-pwd" @click="showComfirmPwd">
+        <span
+          class="show-pwd"
+          @click="showComfirmPwd"
+        >
           <svg-icon :icon-class="passwordType === 'password' ? 'eye' : 'eye-open'" />
         </span>
       </el-form-item>
       <el-form-item>
         <span class="svg-container">
-          <i class="el-icon-mobile-phone" style="color:#fff;font-size: 1.2em;" />
+          <i
+            class="el-icon-mobile-phone"
+            style="color:#fff;font-size: 1.2em;"
+          />
         </span>
         <el-input
           v-model="changeForm.phone"
@@ -160,7 +169,7 @@ export default {
       })
     },
     toRegister() {
-      console.log(this.$route)
+      // console.log(this.$route)
       this.$router.push({
         path: "/register",
       })
@@ -219,19 +228,19 @@ $cursor: #fff;
         color: #fff;
       }
     }
-
   }
   .send-code-container {
-    position:relative;
-    width:calc(100% - 100px);
-    .code,.count{
-      position:absolute;
-      height:100%;
+    position: relative;
+    width: calc(100% - 100px);
+    .code,
+    .count {
+      position: absolute;
+      height: 100%;
       background-color: transparent;
-      right:-92px;
+      right: -92px;
       border: 1px solid #fff;
       border-radius: 5px;
-      color:#fff
+      color: #fff;
     }
   }
 }
@@ -264,7 +273,6 @@ $light_gray: #eee;
     text-align: center;
     border-radius: 10px;
     padding: 30px;
-
   }
 
   .to-register-login {
