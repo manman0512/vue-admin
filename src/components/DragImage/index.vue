@@ -1,35 +1,10 @@
 <template>
   <div class="com-image-drag">
-    <div class="button-list">
-      <el-button
-        v-if="!drag_open && limit>1"
-        :disabled="banner_list.length <= 1"
-        type="text"
-        size="small"
-        class="operation-success"
-        @click="openDrag"
-      >编辑拖拽</el-button>
-      <el-button
-        v-if="drag_open"
-        type="text"
-        size="small"
-        class="operation-success"
-        @click="save"
-      >保存</el-button>
-      <el-button
-        v-if="drag_open"
-        type="text"
-        size="small"
-        class="operation-error"
-        @click="cancle"
-      />
-    </div>
     <div class="image-list">
       <!-- 拖拽层 -->
       <div
         v-show="drag_open"
-        class="list-wrap"
-        :class="drag_open?move:''"
+        class="list-wrap move"
       >
         <draggable
           v-model="banner_list"
@@ -85,14 +60,38 @@
           class="upload-machine"
           :disabled="drag_open"
           :action="action()"
-          :on-error="onError"
-          :on-success="onSuccess"
-          :before-upload="beforeUpload"
+          :on-error="uploadError"
+          :on-success="bannerPicSuccess"
+          :before-upload="beforeImgUpload"
           :show-file-list="false"
           :multiple="multiple"
           enctype="multipart/form-data"
         > <i class="el-icon-plus avatar-uploader-icon" /></el-upload>
       </div>
+    </div>
+    <div class="button-list">
+      <el-button
+        v-if="!drag_open && limit>1"
+        :disabled="banner_list.length <= 1"
+        type="text"
+        size="small"
+        class="operation-success"
+        @click="openDrag"
+      >编辑拖拽</el-button>
+      <el-button
+        v-if="drag_open"
+        type="text"
+        size="small"
+        class="operation-success"
+        @click="save"
+      >保存</el-button>
+      <el-button
+        v-if="drag_open"
+        type="text"
+        size="small"
+        class="operation-error"
+        @click="cancle"
+      />
     </div>
   </div>
 </template>
@@ -108,6 +107,7 @@
  * @param {Function} onError 上传失败的回调函数
  */
 import draggable from "vuedraggable";
+import { Loading } from "element-ui";
 export default {
   name: "ComImageShow",
   components: {
@@ -132,7 +132,7 @@ export default {
     },
     beforeUpload: {
       type: Function,
-      default: () => { }
+      default: null
     },
     onError: {
       type: Function,
@@ -171,7 +171,8 @@ export default {
     this.banner_list = this.list.map(url => {
       const obj = {
         url: url,
-        is_hover: false
+        is_hover: false,
+        loading: false
       };
       return obj;
     });
@@ -196,7 +197,53 @@ export default {
     save() {
       this.$emit("update", this.banner_list.map(item => item.url));
       this.drag_open = false;
-    }
+    },
+    beforeImgUpload(file) {
+      console.log(file)
+      if (this.beforeUpload) {
+        this.$emit("beforeImgUpload", file)
+        return
+      }
+      // 图片长传-之前
+      const self = this;
+      const type_arr = ["image/jpeg", "image/png"];
+      const type = file.type;
+      if (!type_arr.includes(type)) {
+        this.$message.error("图片格式不正确,只支持jpg和png类型图片");
+        return false;
+      }
+      const is_size = new Promise((resolve, reject) => {
+        const img = new Image();
+        img.src = window.URL.createObjectURL(file);
+        img.onload = () => {
+          // const valid = img.width === width && img.height === height;
+          const valid = true
+          if (valid) {
+            // 图片长传-之前
+            Loading.service({ fullscreen: true, text: "图片上传中，请稍后" });
+            resolve(file);
+          } else {
+            self.$message.error("请上传400*320px大小的图片!");
+            reject();
+          }
+        };
+      });
+      return is_size;
+    },
+    // Banner图-成功
+    bannerPicSuccess(res) {
+      Loading.service({ fullscreen: true }).close();
+      if (this.onSuccess) this.onSuccess(res)
+    },
+    // Banner图片上传报错
+    uploadError() {
+      Loading.service({ fullscreen: true }).close();
+      if (this.onError) {
+        this.onError()
+        return
+      }
+      this.$message.error("上传失败，请重新上传");
+    },
   }
 };
 </script>
@@ -216,6 +263,17 @@ export default {
     }
     .list-wrap {
       float: left;
+      .el-icon-upload-success.el-icon-check.icon-success {
+        position: relative;
+        top: 8px;
+      }
+      &.move {
+        .image-item {
+          &:hover {
+            cursor: move;
+          }
+        }
+      }
     }
     .image-item {
       width: 148px;
@@ -230,11 +288,7 @@ export default {
       overflow: hidden;
       cursor: pointer;
     }
-    &.move {
-      .image-item {
-        cursor: move;
-      }
-    }
+
     .label {
       width: 46px;
       height: 26px;
@@ -269,6 +323,9 @@ export default {
     .upload-machine {
       float: left;
     }
+  }
+  .button-list {
+    clear: both;
   }
 }
 </style>

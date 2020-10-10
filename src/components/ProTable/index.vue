@@ -66,7 +66,7 @@
       small
       :page-count="pageCount"
       :page-size="pageSize"
-      @current-change="handleCurrentChange"
+      :current-change="currentChange"
     />
 
   </Container>
@@ -145,9 +145,7 @@ export default {
     handleButton(method, row) {
       this.$emit(method, row)
     },
-    handleCurrentChange(val) {
-      this.$emit('current-change', val)
-    }
+    
   }
 }
 </script>

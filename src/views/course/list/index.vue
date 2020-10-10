@@ -8,8 +8,8 @@
       :page-size="45"
       :loading="loading"
       has-search
+      :current-change="currentChange"
       @preview="preview"
-      @current-change="currentChange"
     >
       <template v-slot:form>
         <el-select
