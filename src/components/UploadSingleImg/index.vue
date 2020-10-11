@@ -9,7 +9,7 @@
       :on-error="handleUploadError"
     >
       <div v-loading="loading" class="loading" />
-      <img v-if="imageUrl" :src="imageUrl" class="avatar">
+      <img v-if="imageUrl" :src="imageUrl" class="avatar" />
       <i v-else class="el-icon-plus avatar-uploader-icon" />
     </el-upload>
   </div>
@@ -20,50 +20,50 @@ export default {
     onSuccess: {
       type: Function,
       require: true,
-      default: () => {}
+      default: () => {},
     },
     onError: {
       type: Function,
       require: true,
-      default: () => {}
-    }
+      default: () => {},
+    },
   },
   data() {
     return {
       imageUrl: "",
       error: false,
-      loading: false
-    };
+      loading: false,
+    }
   },
   methods: {
     handleUploadSuccess(res, file) {
-      this.loading = false;
-      this.imageUrl = URL.createObjectURL(file.raw);
+      this.loading = false
+      this.imageUrl = URL.createObjectURL(file.raw)
       // 触发上一级的uploadSuccess
-      this.$emit("onSuccess");
+      this.$emit("onSuccess")
     },
 
     handleUploadError() {
-      this.loading = false;
-      this.imageUrl = "";
-      this.$emit("onError");
+      this.loading = false
+      this.imageUrl = ""
+      this.$emit("onError")
     },
     beforeUpload(file) {
-      this.error = false;
-      const isJPG = file.type === "image/jpeg";
-      const isLt2M = file.size / 1024 / 1024 < 1;
+      this.error = false
+      const isJPG = file.type === "image/jpeg"
+      const isLt2M = file.size / 1024 / 1024 < 1
 
       if (!isJPG) {
-        this.$message.error("上传头像图片只能是 JPG 格式!");
+        this.$message.error("上传头像图片只能是 JPG 格式!")
       }
       if (!isLt2M) {
-        this.$message.error("上传头像图片大小不能超过 1MB!");
+        this.$message.error("上传头像图片大小不能超过 1MB!")
       }
-      this.loading = true;
-      return isJPG && isLt2M;
-    }
-  }
-};
+      this.loading = true
+      return isJPG && isLt2M
+    },
+  },
+}
 </script>
 <style>
 .avatar-uploader .el-upload {
@@ -74,7 +74,7 @@ export default {
   overflow: hidden;
 }
 .avatar-uploader .el-upload:hover {
-  border-color: #409EFF;
+  border-color: #409eff;
 }
 .avatar-uploader-icon {
   font-size: 28px;

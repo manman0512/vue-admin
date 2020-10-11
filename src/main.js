@@ -1,5 +1,5 @@
 import Vue from 'vue'
-
+import VueAMap from "vue-amap";
 import 'normalize.css/normalize.css' // A modern alternative to CSS resets
 
 import ElementUI from 'element-ui'
@@ -33,7 +33,19 @@ if (process.env.NODE_ENV === 'production') {
 // 如果想要中文版 element-ui，按如下方式声明
 Vue.use(ElementUI)
 
+Vue.use(VueAMap);
+
 Vue.config.productionTip = false
+
+//初始化vue-amap
+VueAMap.initAMapApiLoader({
+  key: '8ac727e588f0d51dc9a63a5227dfbd6c',
+  //插件集合
+  plugin: ['AMap.Autocomplete', 'AMap.CitySearch', 'MarkerClusterer', 'AMap.PlaceSearch', 'AMap.Geolocation'],
+  // 默认高德 sdk 版本为 1.4.4
+  uiVersion: '1.0.11',
+  v: '1.4.4'
+});
 
 new Vue({
   el: '#app',
