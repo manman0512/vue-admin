@@ -13,7 +13,7 @@
     >
       <template v-slot:form>
         <el-select
-          placeholder="商品分类"
+          placeholder="订单分类"
           size="mini"
           value="all"
         >
@@ -63,16 +63,16 @@ export default {
       }],
       columns: [
         {
-          label: "商品封面",
+          label: "订单封面",
           name: "coverUrl",
           type: 'image'
         },
         {
-          label: "商品名称",
+          label: "订单名称",
           name: "name"
         },
         {
-          label: "商品单价",
+          label: "订单单价",
           name: 'price',
           type: "price"
         },

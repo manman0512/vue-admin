@@ -40,10 +40,11 @@
           auto-complete="on"
           @keyup.enter.native="handleLogin"
         />
-        <span class="show-pwd" @click="showPwd">
-          <svg-icon
-            :icon-class="passwordType === 'password' ? 'eye' : 'eye-open'"
-          />
+        <span
+          class="show-pwd"
+          @click="showPwd"
+        >
+          <svg-icon :icon-class="passwordType === 'password' ? 'eye' : 'eye-open'" />
         </span>
       </el-form-item>
       <el-button
@@ -148,7 +149,7 @@ export default {
       });
     },
     toRegister() {
-      console.log(this.$route);
+      // console.log(this.$route);
       this.$router.push({
         path: "/register",
       });
