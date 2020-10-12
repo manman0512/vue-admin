@@ -79,7 +79,8 @@ export default {
         {
           label: "创建时间",
           name: 'create_time',
-          type: "timestamp"
+          type: "timestamp",
+
         }
       ],
       tableOption: {

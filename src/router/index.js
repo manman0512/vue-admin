@@ -1,6 +1,7 @@
 import Vue from "vue";
 import Router from "vue-router";
 import CourseRouter from "./modules/course";
+import organRouter from "./modules/organ";
 
 Vue.use(Router);
 
@@ -59,8 +60,8 @@ export const constantRoutes = [
     hidden: true
   },
   {
-    path: "/sendcode",
-    component: () => import("@/components/SendCode/index"),
+    path: "/prolist",
+    component: () => import("@/components/ProList/index"),
     hidden: true
   },
   {
@@ -88,6 +89,7 @@ export const constantRoutes = [
     ]
   },
   CourseRouter,
+  organRouter,
   {
     path: "/example",
     component: Layout,

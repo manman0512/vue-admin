@@ -20,7 +20,7 @@
             v-for="($item, $index) in banner_list"
             :key="$index"
             class="image-item"
-            :style="{ backgroundImage: `url(${$item.url})` }"
+            :style="{ backgroundImage: `url(${$item.url})`,width:width,height:height }"
           />
         </draggable>
       </div>
@@ -33,7 +33,7 @@
           v-for="($item, $index) in banner_list"
           :key="$index"
           class="image-item"
-          :style="{ backgroundImage: `url(${$item.url})` }"
+          :style="{ backgroundImage: `url(${$item.url})`,width:width,height:height }"
           @mouseover.prevent="$item.is_hover = true"
           @mouseleave.prevent="$item.is_hover = false"
         >
@@ -53,6 +53,7 @@
             />
           </div>
         </div>
+
         <el-upload
           v-show="limit == 0 || banner_list.length < limit"
           list-type="picture-card"
@@ -65,8 +66,10 @@
           :before-upload="beforeImgUpload"
           :show-file-list="false"
           :multiple="multiple"
+          :style="{width:width,height:height}"
           enctype="multipart/form-data"
         > <i class="el-icon-plus avatar-uploader-icon" /></el-upload>
+
       </div>
     </div>
     <div class="button-list">
@@ -108,6 +111,7 @@
  */
 import draggable from "vuedraggable";
 import { Loading } from "element-ui";
+import Setting from "../../settings"
 export default {
   name: "ComImageShow",
   components: {
@@ -128,7 +132,7 @@ export default {
     },
     action: {
       type: Function,
-      default: () => { }
+      default: () => { return Setting.uplodApi }
     },
     beforeUpload: {
       type: Function,
@@ -141,6 +145,14 @@ export default {
     onSuccess: {
       type: Function,
       default: () => { }
+    },
+    width: {
+      type: String,
+      default: "148px"
+    },
+    height: {
+      type: String,
+      default: "148px"
     }
   },
   data() {
@@ -262,10 +274,12 @@ export default {
       content: "";
     }
     .list-wrap {
+      width: 100%;
+      height: 100%;
       float: left;
       .el-icon-upload-success.el-icon-check.icon-success {
         position: relative;
-        top: 8px;
+        top: 2px;
       }
       &.move {
         .image-item {
@@ -274,10 +288,13 @@ export default {
           }
         }
       }
+      .el-upload--picture-card,
+      .upload-machine {
+        width: 100%;
+        height: 100%;
+      }
     }
     .image-item {
-      width: 148px;
-      height: 148px;
       position: relative;
       margin-right: 10px;
       margin-bottom: 10px;
@@ -316,7 +333,7 @@ export default {
       color: #ffffff;
       font-size: 20px;
       position: absolute;
-      left: 45%;
+      left: 40%;
       top: 43%;
     }
 
@@ -326,6 +343,20 @@ export default {
   }
   .button-list {
     clear: both;
+  }
+}
+</style>
+<style lang="scss" >
+.com-image-drag {
+  .el-upload--picture-card {
+    width: 100%;
+    height: 100%;
+    position: relative;
+    .el-icon-plus.avatar-uploader-icon {
+      position: absolute;
+      left: calc(100% / 2 - 14px);
+      top: calc(100% / 2 - 14px);
+    }
   }
 }
 </style>

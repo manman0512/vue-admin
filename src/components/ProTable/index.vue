@@ -1,3 +1,4 @@
+
 <template>
   <Container
     v-loading="loading"
@@ -145,7 +146,6 @@ export default {
     handleButton(method, row) {
       this.$emit(method, row)
     },
-    
   }
 }
 </script>

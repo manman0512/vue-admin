@@ -1,6 +1,5 @@
 module.exports = {
-
-  title: 'Vue Admin Template',
+  title: "Vue Admin Template",
 
   /**
    * @type {boolean} true | false
@@ -14,5 +13,11 @@ module.exports = {
    */
   sidebarLogo: false,
 
-  tagsView: true
-}
+  tagsView: true,
+
+  /**
+   * upload api
+   */
+
+  uplodApi: "http://10.13.30.85:5050/upload/image"
+};
