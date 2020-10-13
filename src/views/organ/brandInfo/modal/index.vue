@@ -1,6 +1,7 @@
 <template>
   <el-dialog
     :visible="visible"
+    :title="title"
     @close="onCancel"
   >
     <el-form
@@ -11,7 +12,7 @@
       <el-form-item label="品牌产品LOGO:">
         <drag-image
           :limit="1"
-          :list="[form.logo]"
+          :list="form.logo?[form.logo]:[]"
           width="84px"
           height="84px"
         />
@@ -23,6 +24,7 @@
         <el-input
           v-model="form.descript"
           type="textarea"
+          :autosize="{minRows:3}"
         />
       </el-form-item>
     </el-form>
@@ -37,7 +39,7 @@
       <el-button
         type="primary"
         size="small"
-        @click="onOk"
+        @click="onSubmit"
       >确 定</el-button>
     </div>
   </el-dialog>
@@ -58,18 +60,18 @@ export default {
       default: true
     },
     onOk: {
-      type: Function,
+      type: Function, // 成功的回调
       default: () => { }
     },
     onCancel: {
-      type: Function,
+      type: Function, // 关闭窗口的回调
       default: () => { }
     },
     formData: {
       type: Object,
       default: () => {
         return {
-          logo: "",
+          logo: '',
           title: ''
         }
       }
@@ -80,12 +82,32 @@ export default {
       return this.visible
     },
     form() {
+      if (this.operateType === "add") {
+        return {}
+      }
       return { ...this.formData }
+    },
+    title() {
+      return this.operateType === "add" ? "添加产品品牌信息" : this.operateType === "edit" ? "编辑产品品牌信息" : ""
     }
   },
   methods: {
     close() {
       this.onCancel()
+    },
+    add() {
+
+    },
+    edit() {
+
+    },
+    onSubmit() {
+      if (this.operateType === "add") {
+        this.add()
+      }
+      if (this.operateType === "edit") {
+        this.edit()
+      }
     }
   }
 }

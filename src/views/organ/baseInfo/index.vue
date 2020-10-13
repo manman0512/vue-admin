@@ -1,38 +1,53 @@
 <template>
   <el-form class="institution-form">
+    <!-- <el-divider content-position="left">基本信息</el-divider> -->
     <div class="base-info">
-      <el-form-item label="机构大图">
-        <drag-image :limit="1" />
-      </el-form-item>
-      <el-form-item label="机构全称">
-        <el-input />
-      </el-form-item>
-      <el-form-item label="机构简称">
-        <el-input />
-      </el-form-item>
-      <el-form-item label="所属行业">
-        <el-input />
-      </el-form-item>
-      <el-form-item label="机构证件号">
-        <el-input />
-      </el-form-item>
-      <el-form-item label="联系地址">
-        <el-input />
-      </el-form-item>
-      <el-form-item label="机构证件照">
-        <drag-image :limit="1" />
-      </el-form-item>
-      <el-form-item label="微信地址">
-        <el-input />
-      </el-form-item>
+      <pro-descript
+        title="基本信息"
+        label-width="120"
+      >
+        <pro-descript-item label-width="120">
+          {{ info.name }}
+        </pro-descript-item>
+        <pro-descript-item label="机构地址:">
+          {{ info.name }}
+        </pro-descript-item>
+        <template v-slot:extra>
+          <el-button
+            size="mini"
+            type="primary"
+          >
+            添加
+          </el-button>
+        </template>
+      </pro-descript>
     </div>
+    <edit-modal
+      :visible="visible"
+      :on-cancel="onCancel"
+      :form-data="formData"
+      :operate-type="operateType"
+    />
   </el-form>
 </template>
 <script>
-import DragImage from "@/components/DragImage"
+import EditModal from "./modal"
+import ProDescript from "@/components/ProDescription"
+import ProDescriptItem from "@/components/ProDescription/Item"
 export default {
   components: {
-    DragImage
+    EditModal,
+    ProDescript,
+    ProDescriptItem
+  },
+  data() {
+    return {
+      visible: false,
+      info: {
+        name: 'amm',
+        address: "张江高科"
+      }
+    }
   }
 }
 </script>

@@ -10,36 +10,12 @@
     </div>
     <div class="pro-list-container">
       <div
-        v-for="(item,index) in dataSource"
+        v-for="(item,index) in data"
         :key="index"
         class="pro-list-item"
       >
-        <div class="pro-list-extra">
-          <!-- <drag-image
-            class="pro-list-extra-logo"
-            :limit="1"
-            :list="[item.logo]"
-            width="72px"
-            height="72px"
-            :on-success="(res)=>onSuccess(res,item,index)"
-          /> -->
-          <img
-            :src="item.logo"
-            alt=""
-            class="pro-list-extra-logo"
-          >
-        </div>
-        <div class="pro-list-main">
-          <div class="pro-list-main-title">
-            <p>
-              {{ item.title }}
-            </p>
-          </div>
-          <div class="pro-list-main-descript">
-            <p style="margin:5px 0;font-size:13px;">
-              {{ item.descript }}
-            </p>
-          </div>
+        <div class="pro-list-content">
+          <slot :row="item" />
         </div>
         <div class="pro-list-item-action">
           <el-button
@@ -60,20 +36,11 @@
 </template>
 <script>
 export default {
+  name: "ProList",
   props: {
     data: {
       type: Array,
-      default: () => [{
-        title: '语雀的天空',
-        descript: '这是语雀的天空',
-        logo:
-          'https://gw.alipayobjects.com/zos/antfincdn/efFD%24IOql2/weixintupian_20170331104822.jpg',
-      }, {
-        title: '语雀的天空',
-        descript: '这是语雀的天空',
-        logo:
-          'https://gw.alipayobjects.com/zos/antfincdn/efFD%24IOql2/weixintupian_20170331104822.jpg',
-      }]
+      default: () => []
     },
     headerTitle: {
       type: String,
@@ -91,19 +58,6 @@ export default {
   data() {
     return {
       logo: []
-    }
-  },
-  computed: {
-    dataSource() {
-      return this.data.map((item, index) => {
-        const obj = {
-          title: item.title,
-          id: index,
-          logo: item.logo,
-          descript: item.descript
-        };
-        return obj;
-      });
     }
   },
   methods: {

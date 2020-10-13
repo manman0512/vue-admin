@@ -1,8 +1,8 @@
 <template>
-  <div class="brand-info">
+  <div class="team-info">
     <pro-list
       :actions="actions"
-      header-title="品牌产品信息"
+      header-title="团队成员信息"
       :data="listData"
       :render-item="renderItem"
       @delete="deleteRow"
@@ -10,14 +10,13 @@
     >
       <template slot-scope="scope">
         <pro-list-item
-          :meta="{logo:scope.row.logo}"
-          :title="scope.row.title"
+          :meta="{logo:scope.row.avatar}"
+          :title="scope.row.name"
         >
-          <p>描述：{{ scope.row.description }}</p>
-          <p>描述：{{ scope.row.description }}</p>
-          <p>描述：{{ scope.row.description }}</p>
-          <p>描述：{{ scope.row.description }}</p>
-          <p>描述：{{ scope.row.description }}</p>
+          <p>成员职位：{{ scope.row.job }}</p>
+          <p>成员描述：{{ scope.row.description }}</p>
+          <p>联系手机：{{ scope.row.phone }}</p>
+          <p>联系微信：{{ scope.row.wechat }}</p>
         </pro-list-item>
       </template>
       <template v-slot:extra>
@@ -39,14 +38,13 @@
 <script>
 import ProList from "@/components/ProList/index"
 import ProListItem from "@/components/ProList/ProListItem/index"
-console.log(ProList)
-import EditModal from "./modal"
+import EditModal from "./modal/index"
 export default {
-  name: "BrandInfo",
+  name: "TeamInfo",
   components: {
     ProList,
-    EditModal,
-    ProListItem
+    ProListItem,
+    EditModal
   },
   data() {
     return {
@@ -58,14 +56,12 @@ export default {
       formData: {},
       operateType: "add",
       listData: [{
-        title: '语雀的天空1',
-        description: '这是语雀的天空1',
-        logo:
-          'https://gw.alipayobjects.com/zos/antfincdn/efFD%24IOql2/weixintupian_20170331104822.jpg',
-      }, {
-        title: '语雀的天空2',
-        description: '这是语雀的天空2',
-        logo:
+        name: '温蒂',
+        job: '前端开发',
+        description: "来自沙溪",
+        phone: "1234566444",
+        wechat: "545454",
+        avatar:
           'https://gw.alipayobjects.com/zos/antfincdn/efFD%24IOql2/weixintupian_20170331104822.jpg',
       }],
       renderItem: (item) => {

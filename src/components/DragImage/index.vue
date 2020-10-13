@@ -278,8 +278,8 @@ export default {
       height: 100%;
       float: left;
       .el-icon-upload-success.el-icon-check.icon-success {
-        position: relative;
-        top: 2px;
+        font-size: 12px;
+        margin-top: 11px;
       }
       &.move {
         .image-item {
@@ -356,6 +356,16 @@ export default {
       position: absolute;
       left: calc(100% / 2 - 14px);
       top: calc(100% / 2 - 14px);
+    }
+    .el-icon-plus {
+      height: 0.8em;
+      width: 0.8em;
+    }
+    .el-icon-plus:before {
+      font-size: 0.8em;
+      position: relative;
+      top: -0.2em;
+      left: 0.1em;
     }
   }
 }
